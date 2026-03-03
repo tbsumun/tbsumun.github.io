@@ -103,13 +103,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-const slides = document.querySelectorAll(".slide");
-let currentSlide = 0;
+   const toggleBtn = document.getElementById("secretariatToggle");
+const sec2026 = document.getElementById("sec2026");
+const sec2025 = document.getElementById("sec2025");
+const section = document.getElementById("secretariat");
 
-setInterval(() => {
-    slides[currentSlide].classList.remove("active");
+toggleBtn.addEventListener("click", () => {
 
-    currentSlide = (currentSlide + 1) % slides.length;
+    if (sec2026.classList.contains("hidden")) {
+        sec2026.classList.remove("hidden");
+        sec2025.classList.add("hidden");
+        toggleBtn.textContent = "TBSUMUN 2025 Secretariat";
+    } else {
+        sec2026.classList.add("hidden");
+        sec2025.classList.remove("hidden");
+        toggleBtn.textContent = "TBSUMUN 2026 Secretariat";
+    }
 
-    slides[currentSlide].classList.add("active");
-}, 5000); // 5 seconds per slide
+    // 🔹 Accurate Scroll Fix
+    const navbar = document.querySelector("nav");
+    const navbarHeight = navbar.offsetHeight;
+
+    const sectionTop = section.getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+        top: sectionTop - navbarHeight - 10,
+        behavior: "smooth"
+    });
+
+});
+
