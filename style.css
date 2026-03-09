@@ -1,3 +1,16 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+body.loading{
+    overflow:hidden;
+}
+
+html.loading{
+    overflow:hidden;
+}
 .fade-out {
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -441,6 +454,8 @@ body{
 /* LOADER */
 #loader{
     position:fixed;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
     background:var(--maroon);
@@ -781,6 +796,13 @@ section h2{
 /* RESPONSIVE Mobile Ver. Fix */
 @media (max-width:1024px){
 
+ section{
+        padding:80px 20px;
+    }
+     nav{
+        padding:18px 20px;
+    }
+
     .hero {
         padding-top: 120px;
         padding-bottom: 80px;
@@ -857,5 +879,4 @@ section h2{
 
 
 }
-
 
