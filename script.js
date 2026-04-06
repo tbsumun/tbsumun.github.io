@@ -1,7 +1,3 @@
-/* ══════════════════════════════════════
-   TBSUMUN 2026 — Enhanced JavaScript
-══════════════════════════════════════ */
-
 // ── LOADER ──
 window.addEventListener("load", function () {
     const loader = document.getElementById("loader");
@@ -125,13 +121,14 @@ window.addEventListener("load", revealOnScroll);
 // Desktop: hover flips via CSS; click toggles a locked-flip state
 // Mobile:  tap toggles flip (no hover)
 document.querySelectorAll(".profile").forEach(profile => {
-    profile.addEventListener("click", function () {
+    profile.addEventListener("click", function (e) {
         if (this.querySelector(".static-card")) return;
+        e.stopPropagation();
         this.classList.toggle("flip");
     });
 });
 
-// Close locked cards when clicking outside
+// Close flipped cards when clicking outside
 document.addEventListener("click", function (e) {
     if (!e.target.closest(".profile")) {
         document.querySelectorAll(".profile.flip").forEach(p => p.classList.remove("flip"));
@@ -182,7 +179,8 @@ toggleBtn.addEventListener("click", () => {
 
 // ── COMMITTEE BLOCK CLICK LOCK ──
 document.querySelectorAll(".committee-block").forEach(block => {
-    block.addEventListener("click", function () {
+    block.addEventListener("click", function (e) {
+        e.stopPropagation();
         this.classList.toggle("locked");
     });
 });
