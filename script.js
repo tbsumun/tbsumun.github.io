@@ -179,20 +179,10 @@ toggleBtn.addEventListener("click", () => {
 
 // ── COMMITTEE BLOCK CLICK LOCK ──
 document.querySelectorAll(".committee-block").forEach(block => {
-    block.addEventListener("click", function () {
-        const isLocked = this.classList.contains("locked");
-        // Close all blocks first
-        document.querySelectorAll(".committee-block.locked").forEach(b => b.classList.remove("locked"));
-        // Re-open only if it wasn't already open
-        if (!isLocked) this.classList.add("locked");
+    block.addEventListener("click", function (e) {
+        e.stopPropagation();
+        this.classList.toggle("locked");
     });
-});
-
-// Close locked committee block when clicking outside
-document.addEventListener("click", function (e) {
-    if (!e.target.closest(".committee-block")) {
-        document.querySelectorAll(".committee-block.locked").forEach(b => b.classList.remove("locked"));
-    }
 });
 
 // ── SMOOTH ANCHOR LINKS ──
