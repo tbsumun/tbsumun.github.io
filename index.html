@@ -21,6 +21,12 @@
 </head>
 <body class="loading">
 
+<!-- SCROLL PROGRESS BAR -->
+<div id="scroll-progress"></div>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Back to top">&#8679;</button>
+
 <!-- LOADER -->
 <div id="loader">
     <img src="images/logo.png" alt="TBSUMUN Logo">
@@ -34,21 +40,95 @@
             <h1>TBSUMUN</h1>
         </a>
     </div>
-    <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+    <button class="menu-toggle" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+
     <ul id="nav-links">
-        <li><a href="#principal">From the Principal's Desk</a></li>
-        <li><a href="#about-tbsumun">About</a></li>
-        <li><a href="#committees">Committees</a></li>
-        <li><a href="#secretariat">Secretariat</a></li>
-        <li><a href="#eb">Executive Board</a></li>
-        <li><a href="#materials">Resources</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <!-- About ▾ -->
+        <li class="nav-dropdown">
+            <a class="nav-dropdown-trigger">About <span class="nav-caret">&#9662;</span></a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="#principal">Principal's Desk</a></li>
+                <li><a href="#muncoordinator">MUN Coordinator</a></li>
+                <li><a href="#about-tbsumun">About TBSUMUN</a></li>
+            </ul>
+        </li>
+        <!-- Conference ▾ -->
+        <li class="nav-dropdown">
+            <a class="nav-dropdown-trigger">Conference <span class="nav-caret">&#9662;</span></a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="#committees">Committees</a></li>
+                <li><a href="#secretariat">Secretariat</a></li>
+                <li><a href="#eb">Executive Board</a></li>
+            </ul>
+        </li>
+        <!-- Schedule ▾ -->
+        <li class="nav-dropdown">
+            <a class="nav-dropdown-trigger">Schedule <span class="nav-caret">&#9662;</span></a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="#itinerary">Itinerary</a></li>
+                <li><a href="#venue">Venue</a></li>
+                <li><a href="#materials">Resources</a></li>
+            </ul>
+        </li>
+        <!-- Info ▾ -->
+        <li class="nav-dropdown">
+            <a class="nav-dropdown-trigger">Info <span class="nav-caret">&#9662;</span></a>
+            <ul class="nav-dropdown-menu">
+                <li><a href="#prizes">Prizes</a></li>
+                <li><a href="#contact">Register &amp; Contact</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+            </ul>
+        </li>
         <li><a class="register-btn" href="https://thebishopsschool.org/tbsinternalportal/TBSMUN/tbsumun_registration_form2026.html?TOKEN=EC278421-9AA7-4DFE-B93D-DF9F06C218D1" target="_blank">Register Now</a></li>
     </ul>
 </nav>
 
+<!-- MOBILE NAV OVERLAY -->
+<div id="nav-overlay"></div>
+
+<!-- MOBILE NAV DRAWER -->
+<div id="nav-drawer">
+    <div class="drawer-header">
+        <div class="drawer-logo">
+            <img src="images/logo.png" alt="TBSUMUN">
+            <span>TBSUMUN 2026</span>
+        </div>
+        <button id="nav-drawer-close" aria-label="Close menu">&#10005;</button>
+    </div>
+    <div class="drawer-body">
+        <div class="drawer-group">
+            <div class="drawer-group-label">About</div>
+            <a href="#principal" class="drawer-link">Principal's Desk</a>
+            <a href="#muncoordinator" class="drawer-link">MUN Coordinator</a>
+            <a href="#about-tbsumun" class="drawer-link">About TBSUMUN</a>
+        </div>
+        <div class="drawer-group">
+            <div class="drawer-group-label">Conference</div>
+            <a href="#committees" class="drawer-link">Committees</a>
+            <a href="#secretariat" class="drawer-link">Secretariat</a>
+            <a href="#eb" class="drawer-link">Executive Board</a>
+        </div>
+        <div class="drawer-group">
+            <div class="drawer-group-label">Schedule</div>
+            <a href="#itinerary" class="drawer-link">Itinerary</a>
+            <a href="#venue" class="drawer-link">Venue</a>
+            <a href="#materials" class="drawer-link">Resources</a>
+        </div>
+        <div class="drawer-group">
+            <div class="drawer-group-label">Info</div>
+            <a href="#prizes" class="drawer-link">Prizes</a>
+            <a href="#contact" class="drawer-link">Register &amp; Contact</a>
+            <a href="#gallery" class="drawer-link">Gallery</a>
+        </div>
+    </div>
+    <div class="drawer-footer">
+        <a href="https://thebishopsschool.org/tbsinternalportal/TBSMUN/tbsumun_registration_form2026.html?TOKEN=EC278421-9AA7-4DFE-B93D-DF9F06C218D1" target="_blank" class="drawer-register">Register Now</a>
+    </div>
+</div>
+
 <!-- HERO -->
 <div class="hero">
+    <canvas id="hero-particles"></canvas>
     <div class="hero-content">
         <p class="hero-school">The Bishop's Co-Ed School, Undri</p>
         <h1 class="hero-main">TBSUMUN 2026</h1>
@@ -145,7 +225,7 @@
 <!-- SECRETARIAT -->
 <section id="secretariat" class="reveal">
     <h2>Secretariat</h2>
-    <p class="secretariat-subtitle">The Pillars of TBSUMUN 2026</p>
+    <p class="secretariat-subtitle">The Pillars of TBSUMUN</p>
     <div class="secretariat-wrapper">
 
         <div id="sec2026" class="secretariat-group">
@@ -196,7 +276,9 @@
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/zeeshanul-haque.png" alt="Zeeshanul Haque"><h3>Mohd. Zeeshanul Haque</h3><p>UNHRC &middot; Chairperson</p></div><div class="profile-back"><h3>About</h3><p>A B.Tech CSE student from Pune and Bishop's Undri alumnus who began his MUN journey in school. Passionate about debating and oration, he embraces new experiences and learns from both successes and setbacks.</p></div></div></div>
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/avani-naik.png" alt="Avani Naik"><h3>Avani Naik</h3><p>UNHRC &middot; Vice-Chairperson</p></div><div class="profile-back"><h3>About</h3><p>A commerce student with a keen interest in Fashion Law. With strengths in marketing, social media, public speaking, and design, she views every chairing experience as an opportunity to grow.</p></div></div></div>
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/zohair-vadiwala.png" alt="Zohair Vadiwala"><h3>Zohair Vadiwala</h3><p>UNGA &middot; Vice-Chairperson</p></div><div class="profile-back"><h3>About</h3><p>A Formula 1 enthusiast who values precision, strategy, and meaningful debate. He fosters structured, inclusive discussions where delegates grow more confident and informed.</p></div></div></div>
+        <!-- <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/abhirav-sharma.png" alt="Abhirav Sharma"><h3>Abhirav Sharma</h3><p>UNGA &middot; Chairperson</p></div><div class="profile-back"><h3>About</h3><p>Abhirav is a law student at GLC, Mumbai. He assisted in writing a book on landmark cases relating to the Real Estate (Regulation and Development) Act, 2016 and has published a paper on the Armed Forces Act with Students for Liberty. Apart from law, he is interested in national security and defense commentary and has 5 years of MUN experience, believing in solution-oriented discourse.</p></div></div></div> -->
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/suvir-arora.png" alt="Suvir Arora"><h3>Suvir Arora</h3><p>UNGA &middot; Vice-Chairperson</p></div><div class="profile-back"><h3>About</h3><p>A student at The Kalyani School aspiring to pursue law. An extrovert who enjoys debate and basketball, he promotes a welcoming environment for all delegates at TBSUMUN.</p></div></div></div>
+        <!-- <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/sarah-katherine.png" alt="Sarah Katherine"><h3>Sarah Katherine</h3><p>UNCOPUOS &middot; Chairperson</p></div><div class="profile-back"><h3>About</h3><p>Sarah is a law student at ILS Law College and a passionate Muner. Having been in the circuit for 5 years, she has seen it evolve through the ups and downs. She is the founder of the Jai Maharashtra delegation, the largest delegation in Pune.</p></div></div></div> -->
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/anvee-prasad.png" alt="Anvee Prasad"><h3>Anvee Prasad</h3><p>UNCOPUOS &middot; Vice-Chairperson</p></div><div class="profile-back"><h3>About</h3><p>Passionate about inclusive progress and geopolitics. Founder of the non-profit Embrace, she balances community service with theatre. As Vice Chair, she ensures engaging, solution-oriented debate.</p></div></div></div>
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/aarna-mehta.png" alt="Aarnaa Mehta"><h3>Aarnaa Mehta</h3><p>UNOCT &middot; Chairperson</p></div><div class="profile-back"><h3>About</h3><p>An economics student at Jai Hind College with interests in global governance and international relations. She has conducted MUN and policy-simulation trainings at institutions like IIT Bombay.</p></div></div></div>
         <div class="profile"><div class="profile-card"><div class="profile-front"><img src="images/arshi-saxena.png" alt="Arshi Saxena"><h3>Arshi Saxena</h3><p>UNOCT &middot; Vice-Chairperson</p></div><div class="profile-back"><h3>About</h3><p>A science student passionate about research and creativity with over two years of MUN and debate experience. Having served as both delegate and secretariat, she brings strong critical thinking and persuasive skills.</p></div></div></div>
@@ -216,9 +298,277 @@
 <section id="contact" class="footer-register">
     <h2>Be A Part of TBSUMUN 2026</h2>
     <p class="contact-email">Email us at: <a href="mailto:tbsumun@gmail.com">tbsumun@gmail.com</a></p>
+
+    <div class="reg-info-strip">
+        <div class="reg-info-item">
+            <span class="reg-info-label">Registration Fee</span>
+            <span class="reg-info-value">₹2,000</span>
+        </div>
+        <div class="reg-info-divider"></div>
+        <div class="reg-info-item">
+            <span class="reg-info-label">Last Date</span>
+            <span class="reg-info-value">5th July 2026</span>
+        </div>
+    </div>
+
     <div class="footer-buttons">
         <a href="https://thebishopsschool.org/tbsinternalportal/TBSMUN/tbsumun_registration_form2026.html?TOKEN=EC278421-9AA7-4DFE-B93D-DF9F06C218D1" target="_blank" class="register-btn">Register Now</a>
         <a href="https://instagram.com/tbsumun" target="_blank" class="insta-btn">Follow on Instagram</a>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PRIZES -->
+<section id="prizes" class="prizes-section reveal">
+    <div class="prizes-container">
+        <p class="prizes-eyebrow">What's at Stake</p>
+        <h2>Cash Prizes</h2>
+        <p class="prizes-intro">TBSUMUN 2026 awards outstanding delegates with real cash prizes across all committees.</p>
+
+        <div class="prizes-grid">
+            <div class="prize-card prize-gold">
+                <div class="prize-icon">🏆</div>
+                <div class="prize-label">Best Delegation</div>
+                <div class="prize-amount">₹20,000</div>
+            </div>
+            <div class="prize-card prize-silver">
+                <div class="prize-icon">🥇</div>
+                <div class="prize-label">Best Delegate</div>
+                <div class="prize-amount">₹10,000</div>
+            </div>
+            <div class="prize-card prize-bronze">
+                <div class="prize-icon">🥈</div>
+                <div class="prize-label">High Commendation</div>
+                <div class="prize-amount">₹8,000</div>
+            </div>
+            <div class="prize-card prize-mention">
+                <div class="prize-icon">🥉</div>
+                <div class="prize-label">Special Mention</div>
+                <div class="prize-amount">₹5,000</div>
+            </div>
+        
+            <div class="prize-card prize-photographer">
+                <div class="prize-icon">📸</div>
+                <div class="prize-label">Best Photographer</div>
+                <div class="prize-amount">₹10,000</div>
+            </div>
+            <div class="prize-card prize-journalist">
+                <div class="prize-icon">📰</div>
+                <div class="prize-label">Best Journalist</div>
+                <div class="prize-amount">₹10,000</div>
+            </div>
+        
+        </div>
+
+        <div class="prizes-instagram">
+            <p class="prizes-ig-label">As seen on our Instagram</p>
+            <p class="prizes-eyebrow">Click the posts to open our account.</p>
+            <div class="prizes-ig-grid">
+                <a href="https://www.instagram.com/p/DVNwXiKDB3V/" target="_blank" class="prizes-ig-post" aria-label="Instagram post - left panel">
+                    <div class="prizes-ig-overlay">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        <span>View Post</span>
+                    </div>
+                </a>
+                <a href="https://www.instagram.com/p/DVNwTygjCaC/" target="_blank" class="prizes-ig-post prizes-ig-center" aria-label="Instagram post - center panel">
+                    <div class="prizes-ig-overlay">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        <span>View Post</span>
+                    </div>
+                </a>
+                <a href="https://www.instagram.com/p/DVNwLCnjDc5/" target="_blank" class="prizes-ig-post" aria-label="Instagram post - right panel">
+                    <div class="prizes-ig-overlay">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        <span>View Post</span>
+                    </div>
+                </a>
+            </div>
+            <p class="prizes-note">
+                For full details, check our
+                <a href="https://instagram.com/tbsumun" target="_blank">Instagram&nbsp;@tbsumun</a>
+                or download the
+                <a href="https://drive.google.com/file/d/11JnAm3WidO6KA1v2Zny_3nYySjai23qJ/view?usp=sharing" target="_blank">Brochure</a>.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ITINERARY -->
+<section id="itinerary" class="itinerary-section reveal">
+    <div class="itinerary-container">
+        <p class="itinerary-eyebrow">Conference Schedule</p>
+        <h2>Itinerary</h2>
+
+        <div class="itinerary-tabs">
+            <button class="itinerary-tab active" data-day="day1">
+                <span class="tab-day">Day One</span>
+                <span class="tab-date">11th July 2026</span>
+            </button>
+            <button class="itinerary-tab" data-day="day2">
+                <span class="tab-day">Day Two</span>
+                <span class="tab-date">12th July 2026</span>
+            </button>
+        </div>
+
+        <div class="itinerary-panel active" id="day1">
+            <div class="itinerary-dress">
+                <span class="dress-icon">👔</span>
+                Dress Code: <strong>Western Formals</strong>
+            </div>
+            <div class="itinerary-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">8:00 – 8:30 am</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Registration</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">8:30 – 9:30 am</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Opening Ceremony</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">9:30 – 10:00 am</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Breakfast</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">10:00 am – 1:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Committee Session 1</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">1:00 – 2:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Lunch</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">2:00 – 5:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Committee Session 2</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">5:00 – 5:15 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">High Tea</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">5:15 – 7:30 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Socials</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="itinerary-panel" id="day2">
+            <div class="itinerary-dress">
+                <span class="dress-icon">🥻</span>
+                Dress Code: <strong>Traditionals</strong>
+            </div>
+            <div class="itinerary-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">8:00 – 8:45 am</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Reporting</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">8:45 – 9:15 am</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Breakfast</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">9:15 am – 1:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Committee Session 3</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">1:00 – 2:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Lunch</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">2:00 – 4:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Committee Session 4</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">4:00 – 4:15 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">High Tea</div>
+                    </div>
+                </div>
+                <div class="timeline-item highlight">
+                    <div class="timeline-time">4:15 – 6:00 pm</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event">
+                        <div class="event-title">Closing Ceremony</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- VENUE -->
+<section id="venue" class="venue-section reveal">
+    <div class="venue-container">
+        <p class="venue-eyebrow">Getting Here</p>
+        <h2>Venue</h2>
+        <div class="venue-grid">
+            <div class="venue-card">
+                <div class="venue-icon">&#127982;</div>
+                <div class="venue-info">
+                    <h3>The Bishop's Co-Ed School, Undri</h3>
+                    <p>7/8, Hadapsar Road, Kad Nagar,<br>Undri, Pune, Maharashtra 411060</p>
+                    <a href="https://maps.app.goo.gl/gkrmqTdRjRtrqE7AA" target="_blank" class="venue-directions-btn">
+                        Get Directions &rarr;
+                    </a>
+                </div>
+            </div>
+            <div class="venue-map-embed">
+                <iframe
+                    src="https://maps.google.com/maps?q=The+Bishop%27s+Co-Ed+School+Undri+Pune&output=embed&z=16"
+                    width="100%"
+                    height="100%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="The Bishop's Co-Ed School, Undri">
+                </iframe>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -238,6 +588,77 @@
 
 <div class="section-divider"></div>
 
+<!-- GALLERY -->
+<section id="gallery" class="gallery-section reveal">
+    <p class="gallery-eyebrow">Gallery</p>
+    <h2>TBSUMUN 2025</h2>
+    <p class="gallery-intro">A glimpse into the inaugural edition that started it all.</p>
+
+    <div class="gallery-columns">
+        <div class="gallery-item"><img src="images/img1.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img2.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img3.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img4.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img5.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img6.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img7.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img8.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img9.jpeg"  alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img10.jpeg" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img11.jpeg" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img12.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img13.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img14.jpg" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img15.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img16.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img17.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img18.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+        <div class="gallery-item"><img src="images/img19.JPG" alt="TBSUMUN 2025"><div class="gallery-overlay"><span>TBSUMUN 2025</span></div></div>
+    </div>
+
+    <a href="https://drive.google.com/drive/folders/1UHlA901kP7eQxHBx5L8o-QC1qdWF7aPU?usp=drive_link" target="_blank" class="gallery-view-all">
+        View Full Album &rarr;
+    </a>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- COUNTDOWN -->
+<section class="countdown-section">
+    <p class="countdown-eyebrow">Counting Down To</p>
+    <h2>TBSUMUN 2026</h2>
+    <div class="countdown-container">
+        <div class="time-box">
+            <div class="time-box-inner">
+                <h3 id="days">00</h3>
+                <p>Days</p>
+            </div>
+        </div>
+        <div class="countdown-colon">:</div>
+        <div class="time-box">
+            <div class="time-box-inner">
+                <h3 id="hours">00</h3>
+                <p>Hours</p>
+            </div>
+        </div>
+        <div class="countdown-colon">:</div>
+        <div class="time-box">
+            <div class="time-box-inner">
+                <h3 id="minutes">00</h3>
+                <p>Minutes</p>
+            </div>
+        </div>
+        <div class="countdown-colon">:</div>
+        <div class="time-box">
+            <div class="time-box-inner">
+                <h3 id="seconds">00</h3>
+                <p>Seconds</p>
+            </div>
+        </div>
+    </div>
+    <p class="countdown-date">11th &amp; 12th July 2026 &nbsp;&middot;&nbsp; The Bishop's Co-Ed School, Undri</p>
+</section>
+
 <!-- GRAND TITLE -->
 <section class="grand-title reveal">
     <div class="grand-title-container">
@@ -248,16 +669,11 @@
     </div>
 </section>
 
-<!-- COUNTDOWN -->
-<section class="countdown-section">
-    <h2>Countdown to TBSUMUN 2026</h2>
-    <div class="countdown-container">
-        <div class="time-box"><h3 id="days">00</h3><p>Days</p></div>
-        <div class="time-box"><h3 id="hours">00</h3><p>Hours</p></div>
-        <div class="time-box"><h3 id="minutes">00</h3><p>Minutes</p></div>
-        <div class="time-box"><h3 id="seconds">00</h3><p>Seconds</p></div>
-    </div>
-</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <p>&copy; TBSUMUN 2026. The Bishop's Co-Ed School, Undri &mdash; All Rights Reserved</p>
+</footer>
 
 </body>
 </html>
