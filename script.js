@@ -1,3 +1,5 @@
+
+
 // ── LOADER ──
 window.addEventListener("load", function () {
     const loader = document.getElementById("loader");
@@ -195,3 +197,251 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// ── GALLERY LIGHTBOX ──
+(function () {
+    const lightbox = document.createElement("div");
+    lightbox.className = "gallery-lightbox";
+    lightbox.innerHTML = `
+        <button class="gallery-lightbox-close" aria-label="Close">&times;</button>
+        <button class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Previous">&#8592;</button>
+        <img src="" alt="Gallery photo">
+        <button class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Next">&#8594;</button>
+    `;
+    document.body.appendChild(lightbox);
+
+    const lbImg   = lightbox.querySelector("img");
+    const lbClose = lightbox.querySelector(".gallery-lightbox-close");
+    const lbPrev  = lightbox.querySelector(".gallery-lightbox-prev");
+    const lbNext  = lightbox.querySelector(".gallery-lightbox-next");
+
+    let images = [];
+    let current = 0;
+
+    function getImages() {
+        return [...document.querySelectorAll(".gallery-item img")]
+            .filter(img => img.src && img.getAttribute("src") !== "");
+    }
+
+    function open(index) {
+        images = getImages();
+        if (!images.length) return;
+        current = index;
+        lbImg.src = images[current].src;
+        lbImg.alt = images[current].alt;
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function close() {
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "";
+        setTimeout(() => { lbImg.src = ""; }, 300);
+    }
+
+    function navigate(dir) {
+        images = getImages();
+        current = (current + dir + images.length) % images.length;
+        lbImg.style.opacity = "0";
+        setTimeout(() => {
+            lbImg.src = images[current].src;
+            lbImg.alt = images[current].alt;
+            lbImg.style.opacity = "1";
+        }, 150);
+        lbImg.style.transition = "opacity 0.15s ease";
+    }
+
+    document.querySelectorAll(".gallery-item").forEach((item) => {
+        item.addEventListener("click", () => {
+            const imgs = getImages();
+            const img  = item.querySelector("img");
+            const idx  = imgs.indexOf(img);
+            if (idx !== -1) open(idx);
+        });
+    });
+
+    lbClose.addEventListener("click", close);
+    lbPrev.addEventListener("click",  () => navigate(-1));
+    lbNext.addEventListener("click",  () => navigate(1));
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) close(); });
+
+    document.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("active")) return;
+        if (e.key === "Escape")     close();
+        if (e.key === "ArrowLeft")  navigate(-1);
+        if (e.key === "ArrowRight") navigate(1);
+    });
+})();
+
+// ── SCROLL PROGRESS BAR ──
+const progressBar = document.getElementById("scroll-progress");
+if (progressBar) {
+    window.addEventListener("scroll", () => {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = (scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0) + "%";
+    }, { passive: true });
+}
+
+// ── BACK TO TOP ──
+const backToTop = document.getElementById("back-to-top");
+if (backToTop) {
+    window.addEventListener("scroll", () => {
+        backToTop.classList.toggle("visible", window.pageYOffset > 400);
+    }, { passive: true });
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+}
+
+// ── MOBILE DRAWER ──
+(function () {
+    const toggleBtn  = document.getElementById("menuToggleBtn");
+    const drawer     = document.getElementById("nav-drawer");
+    const overlay    = document.getElementById("nav-overlay");
+    const closeBtn   = document.getElementById("nav-drawer-close");
+
+    if (!toggleBtn || !drawer || !overlay || !closeBtn) return;
+
+    function open() {
+        drawer.classList.add("open");
+        overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+        toggleBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function close() {
+        drawer.classList.remove("open");
+        overlay.classList.remove("active");
+        document.body.style.overflow = "";
+        toggleBtn.setAttribute("aria-expanded", "false");
+    }
+
+    toggleBtn.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", close);
+
+    document.querySelectorAll(".drawer-link, .drawer-register").forEach(link => {
+        link.addEventListener("click", close);
+    });
+
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") close();
+    });
+})();
+
+// ── DESKTOP DROPDOWN NAV ──
+document.querySelectorAll(".nav-dropdown").forEach(dropdown => {
+    // Click to toggle (touch-friendly) — desktop only
+    dropdown.addEventListener("click", function (e) {
+        if (window.innerWidth <= 1024) return; // skip on mobile, drawer handles nav
+        // Only toggle if clicking the trigger itself, not a child link
+        if (e.target.closest(".nav-dropdown-menu")) return;
+        const isOpen = this.classList.contains("open");
+        document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
+        if (!isOpen) this.classList.add("open");
+        e.stopPropagation();
+    });
+});
+
+// Strip any open dropdowns when resizing to mobile
+window.addEventListener("resize", () => {
+    if (window.innerWidth <= 1024) {
+        document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
+    }
+}, { passive: true });
+
+// Close dropdowns when clicking outside
+document.addEventListener("click", () => {
+    document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
+});
+
+// ── ACTIVE NAV HIGHLIGHT ON SCROLL ──
+(function () {
+    const sections = [
+        "principal", "muncoordinator", "about-tbsumun", "committees",
+        "secretariat", "eb", "contact", "prizes", "itinerary",
+        "venue", "materials", "gallery"
+    ];
+    const allNavLinks = document.querySelectorAll(
+        "#nav-links a[href^='#'], .nav-dropdown-menu a[href^='#'], .drawer-link[href^='#']"
+    );
+
+    function updateActiveNav() {
+        let current = "";
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= 120 && rect.bottom > 120) current = id;
+        });
+        allNavLinks.forEach(link => {
+            link.classList.toggle("nav-active", link.getAttribute("href") === "#" + current);
+        });
+    }
+
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    window.addEventListener("load", updateActiveNav);
+})();
+
+// ── ITINERARY TABS ──
+document.querySelectorAll(".itinerary-tab").forEach(tab => {
+    tab.addEventListener("click", function () {
+        document.querySelectorAll(".itinerary-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".itinerary-panel").forEach(p => p.classList.remove("active"));
+        this.classList.add("active");
+        const panel = document.getElementById(this.getAttribute("data-day"));
+        if (panel) panel.classList.add("active");
+    });
+});
+
+// ── HERO PARTICLES ──
+(function () {
+    const canvas = document.getElementById("hero-particles");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let W, H, particles = [];
+    const COUNT = 55;
+
+    function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    function rand(a, b) { return Math.random() * (b - a) + a; }
+
+    function mkParticle() {
+        return {
+            x: rand(0, W), y: rand(0, H),
+            r: rand(0.6, 2.2),
+            color: Math.random() > 0.4
+                ? `rgba(198,167,94,${rand(0.08, 0.28)})`
+                : `rgba(255,255,255,${rand(0.04, 0.14)})`,
+            vx: rand(-0.18, 0.18), vy: rand(-0.28, -0.06),
+            life: rand(0, 1), pulse: rand(0.004, 0.009)
+        };
+    }
+
+    for (let i = 0; i < COUNT; i++) particles.push(mkParticle());
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+            p.life += p.pulse;
+            if (p.life > 1) p.life = 0;
+            const alpha = Math.sin(p.life * Math.PI);
+            const base  = p.color.replace(/[\d.]+\)$/, "");
+            const max   = parseFloat(p.color.match(/([\d.]+)\)$/)[1]);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = base + (max * alpha) + ")";
+            ctx.fill();
+            p.x += p.vx; p.y += p.vy;
+            if (p.y < -5) { p.y = H + 5; p.x = rand(0, W); }
+            if (p.x < -5) p.x = W + 5;
+            if (p.x > W + 5) p.x = -5;
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
