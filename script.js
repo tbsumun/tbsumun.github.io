@@ -155,11 +155,20 @@ function getEventState() {
         titleEl.textContent = "TBSUMUN IS LIVE!";
         titleEl.style.color = "#ff4444";
         titleEl.style.textShadow = "0 0 40px rgba(255,68,68,0.6)";
+        const datePill = document.querySelector(".hero-date");
+        if (datePill) {
+            datePill.textContent = "Happening Now — 11th & 12th July 2026";
+            datePill.style.borderColor = "rgba(255,68,68,0.6)";
+            datePill.style.color = "#ff7777";
+            datePill.style.background = "rgba(255,40,40,0.1)";
+        }
         return;
     }
 
     if (state === "ended") {
         titleEl.textContent = "See You Next Year!";
+        const datePill = document.querySelector(".hero-date");
+        if (datePill) datePill.textContent = "11th & 12th July 2026 — It's A Wrap!";
         return;
     }
 

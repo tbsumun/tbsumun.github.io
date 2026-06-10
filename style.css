@@ -334,6 +334,10 @@ nav .register-btn::after { display: none; }
     margin: 36px auto;
     opacity: 0;
     animation: fadeUp 0.9s 0.9s forwards ease;
+    will-change: opacity, transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .hero-motto {
