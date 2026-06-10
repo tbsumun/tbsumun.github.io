@@ -1,6 +1,5 @@
 
-
-// ── LOADER ──
+// loader
 window.addEventListener("load", function () {
     const loader = document.getElementById("loader");
     setTimeout(() => {
@@ -11,7 +10,7 @@ window.addEventListener("load", function () {
     }, 600);
 });
 
-// ── MOBILE MENU ──
+// mobile menu
 function toggleMenu() {
     const nav = document.getElementById("nav-links");
     nav.classList.toggle("active");
@@ -27,9 +26,9 @@ document.querySelectorAll("#nav-links a").forEach(link => {
     link.addEventListener("click", () => {
         document.getElementById("nav-links").classList.remove("active");
     });
-});
+ });
 
-// ── NAVBAR HIDE/SHOW ON SCROLL ──
+// navbar hide and show
 let lastScroll = 0;
 const navbar = document.querySelector("nav");
 
@@ -60,20 +59,185 @@ window.addEventListener("scroll", () => {
     lastScroll = currentScroll;
 });
 
-// ── COUNTDOWN ──
+// event part
+const EVENT_START = new Date("July 11, 2026 00:00:00").getTime();
+const EVENT_END   = new Date("July 13, 2026 00:00:00").getTime(); // ends after 12th
+
+function getEventState() {
+    const now = Date.now();
+    if (now < EVENT_START)  return "before";
+    if (now < EVENT_END)    return "live";
+    return "ended";
+}
+
+// confetti for hero
+(function () {
+    const canvas = document.getElementById("confetti-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let pieces = [];
+    let running = false;
+    let raf;
+
+    function resize() {
+        const hero = canvas.closest(".hero");
+        canvas.width  = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+    }
+
+    const COLORS = ["#c6a75e","#ffffff","#ffd700","#f4c842","#a67c3a","#fffbe6","#e8c96a"];
+
+    function spawn(n) {
+        for (let i = 0; i < n; i++) {
+            pieces.push({
+                x: Math.random() * canvas.width,
+                y: -10 - Math.random() * 60,
+                w: 7 + Math.random() * 7,
+                h: 3 + Math.random() * 4,
+                color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                angle: Math.random() * Math.PI * 2,
+                spin: (Math.random() - 0.5) * 0.18,
+                vx: (Math.random() - 0.5) * 2.2,
+                vy: 2.2 + Math.random() * 2.8,
+                opacity: 1
+            });
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+            ctx.save();
+            ctx.globalAlpha = p.opacity;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+            p.x += p.vx;
+            p.y += p.vy;
+            p.angle += p.spin;
+            if (p.y > canvas.height * 0.7) p.opacity -= 0.018;
+        });
+        pieces = pieces.filter(p => p.opacity > 0);
+        if (pieces.length > 0) raf = requestAnimationFrame(draw);
+        else { ctx.clearRect(0, 0, canvas.width, canvas.height); running = false; }
+    }
+
+    window.startConfetti = function () {
+        if (running) return;
+        running = true;
+        resize();
+        spawn(110);
+        draw();
+        // Burst more after 600ms for energy
+        setTimeout(() => { spawn(80); }, 600);
+    };
+
+    window.stopConfetti = function () {
+        pieces = [];
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        cancelAnimationFrame(raf);
+        running = false;
+    };
+
+    window.addEventListener("resize", resize, { passive: true });
+    resize();
+})();
+
+// hero title switch anim
+(function () {
+    const state = getEventState();
+    const titleEl = document.getElementById("hero-title-text");
+    if (!titleEl) return;
+
+    if (state === "live") {
+        titleEl.textContent = "TBSUMUN IS LIVE!";
+        titleEl.style.color = "#ff4444";
+        titleEl.style.textShadow = "0 0 40px rgba(255,68,68,0.6)";
+        return;
+    }
+
+    if (state === "ended") {
+        titleEl.textContent = "See You Next Year!";
+        return;
+    }
+
+    // "before" state: cycle between DAYS TO GO! and TBSUMUN 2026
+    const now   = Date.now();
+    const diff  = EVENT_START - now;
+    const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const daysLabel = days === 1 ? "1 DAY TO GO!" : `${days} DAYS TO GO!`;
+
+    const SHOW_HYPE   = 5500;  // ms showing "X DAYS TO GO!"
+    const SHOW_TITLE  = 4000;  // ms showing "TBSUMUN 2026"
+    const FADE        = 400;   // ms for fade transition
+
+    let showingHype = false; // start with TBSUMUN 2026, then immediately switch
+
+    function fadeToHype() {
+        titleEl.style.transition = `opacity ${FADE}ms ease`;
+        titleEl.style.opacity = "0";
+        setTimeout(() => {
+            titleEl.textContent = daysLabel;
+            titleEl.style.color = "";
+            titleEl.style.textShadow = "";
+            titleEl.style.opacity = "1";
+            showingHype = true;
+            window.startConfetti && window.startConfetti();
+            setTimeout(fadeToTitle, SHOW_HYPE);
+        }, FADE);
+    }
+
+    function fadeToTitle() {
+        titleEl.style.transition = `opacity ${FADE}ms ease`;
+        titleEl.style.opacity = "0";
+        window.stopConfetti && window.stopConfetti();
+        setTimeout(() => {
+            titleEl.textContent = "TBSUMUN 2026";
+            titleEl.style.opacity = "1";
+            showingHype = false;
+            setTimeout(fadeToHype, SHOW_TITLE);
+        }, FADE);
+    }
+
+    // Kick off: brief pause then start cycling
+    setTimeout(fadeToHype, 800);
+})();
+
+// countdown
 const eventDate = new Date("July 11, 2026 00:00:00").getTime();
 
 function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = eventDate - now;
+    const state = getEventState();
 
-    if (distance < 0) {
-        document.getElementById("days").innerHTML = "00";
-        document.getElementById("hours").innerHTML = "00";
-        document.getElementById("minutes").innerHTML = "00";
-        document.getElementById("seconds").innerHTML = "00";
+    const defaultEl = document.getElementById("countdown-default");
+    const liveEl    = document.getElementById("countdown-live");
+    const endedEl   = document.getElementById("countdown-ended");
+
+    if (state === "live") {
+        if (defaultEl) defaultEl.style.display = "none";
+        if (liveEl)    liveEl.style.display    = "block";
+        if (endedEl)   endedEl.style.display   = "none";
         return;
     }
+
+    if (state === "ended") {
+        if (defaultEl) defaultEl.style.display = "none";
+        if (liveEl)    liveEl.style.display    = "none";
+        if (endedEl)   endedEl.style.display   = "block";
+        return;
+    }
+
+    // "before" — show countdown
+    if (defaultEl) defaultEl.style.display = "block";
+    if (liveEl)    liveEl.style.display    = "none";
+    if (endedEl)   endedEl.style.display   = "none";
+
+    const now      = new Date().getTime();
+    const distance = eventDate - now;
+
+    if (distance < 0) return;
 
     const days    = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -106,7 +270,7 @@ function setWithFlip(id, value) {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ── SCROLL REVEAL ──
+// revealing scroll
 function revealOnScroll() {
     document.querySelectorAll(".reveal").forEach(el => {
         const top = el.getBoundingClientRect().top;
@@ -137,7 +301,7 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// ── GRAND LOGO CLICK ──
+// grand logo redirect
 document.addEventListener("DOMContentLoaded", function () {
     const grandLogo = document.querySelector(".grand-logo");
     if (grandLogo) {
@@ -147,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// ── SECRETARIAT TOGGLE ──
+// secretariat profile toggle
 const toggleBtn = document.getElementById("secretariatToggle");
 const sec2026   = document.getElementById("sec2026");
 const sec2025   = document.getElementById("sec2025");
@@ -179,7 +343,7 @@ toggleBtn.addEventListener("click", () => {
     }, 500);
 });
 
-// ── COMMITTEE BLOCK CLICK LOCK ──
+// committee block clicklock
 document.querySelectorAll(".committee-block").forEach(block => {
     block.addEventListener("click", function (e) {
         e.stopPropagation();
@@ -187,7 +351,7 @@ document.querySelectorAll(".committee-block").forEach(block => {
     });
 });
 
-// ── SMOOTH ANCHOR LINKS ──
+// anchor link hold
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", function (e) {
         const target = document.querySelector(this.getAttribute("href"));
@@ -198,7 +362,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// ── GALLERY LIGHTBOX ──
+// gallery lightbox
 (function () {
     const lightbox = document.createElement("div");
     lightbox.className = "gallery-lightbox";
@@ -273,7 +437,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 })();
 
-// ── SCROLL PROGRESS BAR ──
+// SCROLL PROGRESS BAR
 const progressBar = document.getElementById("scroll-progress");
 if (progressBar) {
     window.addEventListener("scroll", () => {
@@ -283,7 +447,7 @@ if (progressBar) {
     }, { passive: true });
 }
 
-// ── BACK TO TOP ──
+// BACK TO TOP 
 const backToTop = document.getElementById("back-to-top");
 if (backToTop) {
     window.addEventListener("scroll", () => {
@@ -292,7 +456,7 @@ if (backToTop) {
     backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
 
-// ── MOBILE DRAWER ──
+// MOBILE DRAWER 
 (function () {
     const toggleBtn  = document.getElementById("menuToggleBtn");
     const drawer     = document.getElementById("nav-drawer");
@@ -328,7 +492,7 @@ if (backToTop) {
     });
 })();
 
-// ── DESKTOP DROPDOWN NAV ──
+// DESKTOP DROPDOWN NAV 
 document.querySelectorAll(".nav-dropdown").forEach(dropdown => {
     // Click to toggle (touch-friendly) — desktop only
     dropdown.addEventListener("click", function (e) {
@@ -354,7 +518,7 @@ document.addEventListener("click", () => {
     document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
 });
 
-// ── ACTIVE NAV HIGHLIGHT ON SCROLL ──
+// ACTIVE NAV HIGHLIGHT ON SCROLL 
 (function () {
     const sections = [
         "principal", "muncoordinator", "about-tbsumun", "committees",
@@ -382,7 +546,7 @@ document.addEventListener("click", () => {
     window.addEventListener("load", updateActiveNav);
 })();
 
-// ── ITINERARY TABS ──
+// ITINERARY TABS 
 document.querySelectorAll(".itinerary-tab").forEach(tab => {
     tab.addEventListener("click", function () {
         document.querySelectorAll(".itinerary-tab").forEach(t => t.classList.remove("active"));
@@ -393,7 +557,7 @@ document.querySelectorAll(".itinerary-tab").forEach(tab => {
     });
 });
 
-// ── HERO PARTICLES ──
+// HERO PARTICLES 
 (function () {
     const canvas = document.getElementById("hero-particles");
     if (!canvas) return;
@@ -446,7 +610,7 @@ document.querySelectorAll(".itinerary-tab").forEach(tab => {
     draw();
 })();
 
-/* ── FAQ ACCORDION ── */
+/* FAQ   */
 (function () {
     document.querySelectorAll('.faq-question').forEach(btn => {
         btn.addEventListener('click', () => {

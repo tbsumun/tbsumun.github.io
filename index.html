@@ -21,10 +21,10 @@
 </head>
 <body class="loading">
 
-<!-- SCROLL PROGRESS BAR -->
+<!-- scroll progress -->
 <div id="scroll-progress"></div>
 
-<!-- BACK TO TOP -->
+<!-- backtotop -->
 <button id="back-to-top" aria-label="Back to top">&#8679;</button>
 
 <!-- LOADER -->
@@ -43,7 +43,7 @@
     <button class="menu-toggle" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
 
     <ul id="nav-links">
-        <!-- About ▾ -->
+        <!-- About sec -->
         <li class="nav-dropdown">
             <a class="nav-dropdown-trigger">About <span class="nav-caret">&#9662;</span></a>
             <ul class="nav-dropdown-menu">
@@ -52,7 +52,7 @@
                 <li><a href="#about-tbsumun">About TBSUMUN</a></li>
             </ul>
         </li>
-        <!-- Conference ▾ -->
+        <!-- Conference sec -->
         <li class="nav-dropdown">
             <a class="nav-dropdown-trigger">Conference <span class="nav-caret">&#9662;</span></a>
             <ul class="nav-dropdown-menu">
@@ -70,7 +70,7 @@
                 <li><a href="#materials">Resources</a></li>
             </ul>
         </li>
-        <!-- Info ▾ -->
+        <!-- Info sec -->
         <li class="nav-dropdown">
             <a class="nav-dropdown-trigger">Info <span class="nav-caret">&#9662;</span></a>
             <ul class="nav-dropdown-menu">
@@ -128,12 +128,13 @@
     </div>
 </div>
 
-<!-- HERO -->
+<!-- hero title -->
 <div class="hero">
     <canvas id="hero-particles"></canvas>
     <div class="hero-content">
         <p class="hero-school">The Bishop's Co-Ed School, Undri</p>
-        <h1 class="hero-main">TBSUMUN 2026</h1>
+        <h1 class="hero-main" id="hero-title"><span id="hero-title-text">TBSUMUN 2026</span></h1>
+        <canvas id="confetti-canvas"></canvas>
         <p class="hero-sub">Model United Nations</p>
         <div class="hero-divider"></div>
         <p class="hero-motto">Debate. Demur. Deliver.</p>
@@ -142,7 +143,7 @@
     <div class="hero-scroll-hint">Scroll</div>
 </div>
 
-<!-- PRINCIPAL -->
+<!-- prn section -->
 <section id="principal" class="principal-section reveal">
     <div class="principal-container">
         <h2 class="principal-heading">From the Principal's Desk</h2>
@@ -175,7 +176,7 @@
 
 <div class="section-divider"></div>
 
-<!-- ABOUT -->
+<!-- abt section -->
 <section id="about-tbsumun" class="about-section reveal">
     <div class="about-container">
         <h2>About TBSUMUN 2026</h2>
@@ -271,7 +272,7 @@
     </div>
 </section>
 
-<!-- EXECUTIVE BOARD -->
+<!-- Eb -->
 <section id="eb" class="reveal">
     <h2>Executive Board</h2>
     <div class="secretariat-grid">
@@ -401,7 +402,7 @@
 
 <div class="section-divider"></div>
 
-<!-- ITINERARY -->
+<!-- itinerary -->
 <section id="itinerary" class="itinerary-section reveal">
     <div class="itinerary-container">
         <p class="itinerary-eyebrow">Conference Schedule</p>
@@ -629,39 +630,60 @@
 <div class="section-divider"></div>
 
 <!-- COUNTDOWN -->
-<section class="countdown-section">
-    <p class="countdown-eyebrow">Counting Down To</p>
-    <h2>TBSUMUN 2026</h2>
-    <div class="countdown-container">
-        <div class="time-box">
-            <div class="time-box-inner">
-                <h3 id="days">00</h3>
-                <p>Days</p>
+<section class="countdown-section" id="countdown-section">
+    <!-- default countdown part -->
+    <div id="countdown-default">
+        <p class="countdown-eyebrow">Counting Down To</p>
+        <h2>TBSUMUN 2026</h2>
+        <div class="countdown-container">
+            <div class="time-box">
+                <div class="time-box-inner">
+                    <h3 id="days">00</h3>
+                    <p>Days</p>
+                </div>
+            </div>
+            <div class="countdown-colon">:</div>
+            <div class="time-box">
+                <div class="time-box-inner">
+                    <h3 id="hours">00</h3>
+                    <p>Hours</p>
+                </div>
+            </div>
+            <div class="countdown-colon">:</div>
+            <div class="time-box">
+                <div class="time-box-inner">
+                    <h3 id="minutes">00</h3>
+                    <p>Minutes</p>
+                </div>
+            </div>
+            <div class="countdown-colon">:</div>
+            <div class="time-box">
+                <div class="time-box-inner">
+                    <h3 id="seconds">00</h3>
+                    <p>Seconds</p>
+                </div>
             </div>
         </div>
-        <div class="countdown-colon">:</div>
-        <div class="time-box">
-            <div class="time-box-inner">
-                <h3 id="hours">00</h3>
-                <p>Hours</p>
-            </div>
-        </div>
-        <div class="countdown-colon">:</div>
-        <div class="time-box">
-            <div class="time-box-inner">
-                <h3 id="minutes">00</h3>
-                <p>Minutes</p>
-            </div>
-        </div>
-        <div class="countdown-colon">:</div>
-        <div class="time-box">
-            <div class="time-box-inner">
-                <h3 id="seconds">00</h3>
-                <p>Seconds</p>
-            </div>
-        </div>
+        <p class="countdown-date">11th &amp; 12th July 2026 &nbsp;&middot;&nbsp; The Bishop's Co-Ed School, Undri</p>
     </div>
-    <p class="countdown-date">11th &amp; 12th July 2026 &nbsp;&middot;&nbsp; The Bishop's Co-Ed School, Undri</p>
+
+    <!-- tbsumun is live part -->
+    <div id="countdown-live" style="display:none;">
+        <div class="countdown-live-badge">
+            <span class="live-pulse"></span> LIVE NOW
+        </div>
+        <h2 class="countdown-live-title">TBSUMUN is LIVE!</h2>
+        <p class="countdown-live-sub">The conference is underway &mdash; 11th &amp; 12th July 2026</p>
+        <p class="countdown-date">The Bishop's Co-Ed School, Undri</p>
+    </div>
+
+    <!-- see you next year part -->
+    <div id="countdown-ended" style="display:none;">
+        <p class="countdown-eyebrow">Thank you for joining us</p>
+        <h2>TBSUMUN 2026 — It's a Wrap!</h2>
+        <p class="countdown-date">11th &amp; 12th July 2026 &nbsp;&middot;&nbsp; The Bishop's Co-Ed School, Undri</p>
+        <p class="countdown-ended-msg">The conference has concluded. See you at the next edition!</p>
+    </div>
 </section>
 
 <!-- FAQ -->
