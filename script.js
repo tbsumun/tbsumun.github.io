@@ -638,3 +638,37 @@ document.querySelectorAll(".itinerary-tab").forEach(tab => {
         });
     });
 })();
+
+// REGISTRATIONS CLOSED — intercept all register buttons
+(function () {
+    const modal    = document.getElementById("reg-closed-modal");
+    const closeBtn = document.getElementById("reg-modal-close");
+    const okBtn    = document.getElementById("reg-modal-ok");
+
+    if (!modal) return;
+
+    function openModal(e) {
+        e.preventDefault();
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    // Target every register button / link (navbar, drawer, contact section)
+    document.querySelectorAll(
+        ".register-btn, .drawer-register, a[href*='tbsumun_registration_form']"
+    ).forEach(el => el.addEventListener("click", openModal));
+
+    closeBtn.addEventListener("click", closeModal);
+    okBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && modal.classList.contains("active")) closeModal();
+    });
+})();

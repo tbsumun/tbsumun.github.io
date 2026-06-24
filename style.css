@@ -3104,3 +3104,83 @@ nav a.nav-active:not(.register-btn)::after { width: 70%; }
     letter-spacing: 1px;
     margin-top: 14px;
 }
+
+/* ── REGISTRATIONS CLOSED MODAL ── */
+.reg-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+}
+.reg-modal-overlay.active {
+    display: flex;
+}
+.reg-modal-box {
+    background: linear-gradient(160deg, #1a1409 0%, #0e0b04 100%);
+    border: 1px solid rgba(198, 167, 94, 0.35);
+    border-radius: 16px;
+    padding: 2.5rem 2rem 2rem;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(198,167,94,0.1);
+    animation: modalPop 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.reg-modal-close {
+    position: absolute;
+    top: 0.85rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: rgba(198,167,94,0.6);
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.reg-modal-close:hover { color: #c6a75e; }
+.reg-modal-icon {
+    font-size: 2.8rem;
+    margin-bottom: 0.75rem;
+}
+.reg-modal-box h2 {
+    color: #c6a75e;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin: 0 0 0.75rem;
+}
+.reg-modal-box p {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin: 0 0 0.5rem;
+}
+.reg-modal-sub {
+    color: rgba(255,255,255,0.55) !important;
+    font-size: 0.88rem !important;
+    margin-top: 0.25rem !important;
+}
+.reg-modal-btn {
+    margin-top: 1.5rem;
+    background: linear-gradient(135deg, #c6a75e, #a67c3a);
+    color: #0e0b04;
+    border: none;
+    border-radius: 8px;
+    padding: 0.65rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s, transform 0.15s;
+}
+.reg-modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
